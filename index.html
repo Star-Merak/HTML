@@ -7,6 +7,123 @@
     <title>Document</title>
 </head>
 <body>
+    <h1>标题</h1>
+    <!--
+        文本格式化标签：
+        设置粗体、斜体或下划线等效果
+        加粗：<strong></strong>或<b></b>
+        倾斜：<em></em>或<i></i>
+        删除线：<del></del>或<s></s>
+        下划线：<ins></ins>或<u></u>
+    -->
+    <p>
+        这是一个<strong>加粗文本</strong><br/>
+        这是<b>加粗文本</b>的另一种写法
+    </p>
+
+    <p>
+        这是一个<em>斜体文本</em><br/>
+        这是<i>斜体文本</i>的另一种写法
+    </p>
+
+    <p>
+        这是一个<del>删除文本</del><br/>
+        这是<s>删除文本</s>的另一种写法
+    </p>
+
+    <p>
+        这是一个<ins>下划线文本</ins><br/>
+        这是<u>下划线文本</u>的另一种写法
+    </p>
+<!-------------------------------------------------------------------------------------->
+    <!--
+        <div>标签与<span>标签：
+        <div></div>标签：division，表示分割，分区。用于网页布局。大盒子
+        div标签是块级元素，拥有块级元素的特点。
+        每对div标签（<div></div>）里的内容都可以占据一行，不会其他标签在一行显示；div标签总是从新行开始显示；
+        且div标签可以通过css样式来设置自身的宽度（也可省略，当没有使用css自定义宽度时，div标签的宽度为其的容器的100%）、高度，且还可以设置标签之间的距离（外边距和内边距）；
+        我们还可以在div标签中，使用其他标签（行内元素、块级元素都行），比如：span标签，p标签，也可以是div标签。
+        标签的简单示例：设置这些div标签的容器的宽度为500px，高度为500px。
+        <div class="div1">内容1，使用div，不设置宽度，不设置边距</div>
+        <div class="div2">内容2，使用div，不设置宽度，设置内边距padding: 20px</div>
+        <div class="div3">内容3，使用div，不设置宽度，设置外边距margin: 20px</div>
+        <div class="div4">内容4，使用div，设置宽度，设置外边距margin: 20px</div>
+        <div class="div5">内容5，使用div，设置宽度，设置内边距padding: 20px</div>
+        <div class="div1">内容6，使用div，不设置宽度，不设置边距</div>
+        --------------------------------------------------------------------------------------------
+        <span></span>标签：意为跨度、跨区
+    -->
+    <div>我是第一个DIV标签</div><div>我是第二个DIV标签</div>
+
+    <span>SPAN1</span>
+    <span>SPAN2</span>
+    <span>SPAN3</span>
+<!-------------------------------------------------------------------------------------->
+    <!--
+        图像标签：
+        <img src="图像路径或图像URL">
+        标签属性：
+        alt：文本。替换文本，图像不能显示的文字
+        title：文本。提示文本，鼠标移动到图像提示文字
+        width：像素，图片宽度
+        height：像素，图片高度
+        border：像素，图像边框粗细
+
+        图像标签注意点
+        ①：图像标签属性必须写在标签名img后面
+        ②：属性之间不分先后顺序，但是属性与属性之间一定要用空格分开
+        ③：属性采用键值对格式，即key="value"的格式，属性=“属性值”
+        ④：
+    -->
+    <h4>这是一个图片标签</h4>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQAAAACoxAthAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAd2KE6QAAAAJcEhZcwAAFxEAABcRAcom8z8AAALbSURBVHja7Zs7coNADIblcUHpI3AUjgZH4yg+AiWFxwp67S5xMpN0i+ZX4XiMPprV6h3ifwsBAQIEyJ+RF7nMz+H4Yeb9zjQ1KjTyO3QmINkQf2TKh8JLHin4HA5l/XQdIJ0jC9HdEV5GebaO+ipVXuX0eSW6AUmM2N1/Hlf8UNZPNuUByMUQu/vyvZ6+uHEgqZHG8x/4oMoCMu/FbH4PFkAujdQUToxn9Ij/Ep+/3yL6/5b1AekHaUXwQDhy8sPztzpAkiHLuIXBiJ83E6rg8/D5zNtQ7j6QRIjHek3dT+UbkSqzVuIP+QTSNyIpXCMaxDWgr/6SXX3+fmvvPpAUiMb6rSRvS5O6692PUm475/xA+kRqJS4pnFbiQwXdPwxvApINiSDuoKVwNOqDppVqAiQZEu5C+m/38PM07k0XzhzFp+cH0hdiEh7AA/rkQVzVwvPbS4AkQyx1n6ONVptpPhdTg9m8HgeSC7GSzQ3Dk/najRGzKcn9BKRrxO6+TcREyunrRMwCuii/v7sLIJdHiqmw5wA+K3nFrfdM4LEXgwHSJ1IybQrl0lhT+bE3DiQT8mg8gPfDY09JzOlI5NbvBgMkCzIWI7G4LyUbRR/GnxI1CTyQHhEL3/c4fSJL2+rguwy4m+IdSBKEfTPNwaUdbrpnUM+/tQ1VIGkQMxXbTaI51l3u7NuJvnRqxgOkY8SSdtaVM/nVJyPuDcrpr49TLQYkB6KRXaeidSZifRiL+9ZOP62bAukT0fpri5lI9MZ9SsJvr9M/incgKZAqtm6qSw7q54vPt7u/NzYGJAlSl40dpOIozv81UCcjQHpF/Otct1PixH3E6f6/qcSB5EGW054Sc2mha6xvZQKSFYkEPnoy0Ur1YQq/gVwFeeoBj+YKyt44aS1G08/rpkAuj7jn1z8L1Waabab59rjIR7AA0hfiMse6kZ57yckNlNNv3DiQJMh/BQgQIED+KF+tl0BnErgX6gAAAABJRU5ErkJggg=="/>
     
+    <h4>这是一个图片无法显示时替换的文本示例</h4>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAd2KE6QAAAAJcEhZcwAAFxEAABcRAcom8z8AAALbSURBVHja7Zs7coNADIblcUHpI3AUjgZH4yg+AiWFxwp67S5xMpN0i+ZX4XiMPprV6h3ifwsBAQIEyJ+RF7nMz+H4Yeb9zjQ1KjTyO3QmINkQf2TKh8JLHin4HA5l/XQdIJ0jC9HdEV5GebaO+ipVXuX0eSW6AUmM2N1/Hlf8UNZPNuUByMUQu/vyvZ6+uHEgqZHG8x/4oMoCMu/FbH4PFkAujdQUToxn9Ij/Ep+/3yL6/5b1AekHaUXwQDhy8sPztzpAkiHLuIXBiJ83E6rg8/D5zNtQ7j6QRIjHek3dT+UbkSqzVuIP+QTSNyIpXCMaxDWgr/6SXX3+fmvvPpAUiMb6rSRvS5O6692PUm475/xA+kRqJS4pnFbiQwXdPwxvApINiSDuoKVwNOqDppVqAiQZEu5C+m/38PM07k0XzhzFp+cH0hdiEh7AA/rkQVzVwvPbS4AkQyx1n6ONVptpPhdTg9m8HgeSC7GSzQ3Dk/najRGzKcn9BKRrxO6+TcREyunrRMwCuii/v7sLIJdHiqmw5wA+K3nFrfdM4LEXgwHSJ1IybQrl0lhT+bE3DiQT8mg8gPfDY09JzOlI5NbvBgMkCzIWI7G4LyUbRR/GnxI1CTyQHhEL3/c4fSJL2+rguwy4m+IdSBKEfTPNwaUdbrpnUM+/tQ1VIGkQMxXbTaI51l3u7NuJvnRqxgOkY8SSdtaVM/nVJyPuDcrpr49TLQYkB6KRXaeidSZifRiL+9ZOP62bAukT0fpri5lI9MZ9SsJvr9M/incgKZAqtm6qSw7q54vPt7u/NzYGJAlSl40dpOIozv81UCcjQHpF/Otct1PixH3E6f6/qcSB5EGW054Sc2mha6xvZQKSFYkEPnoy0Ur1YQq/gVwFeeoBj+YKyt44aS1" alt="图片无法显示了"/>
+
+    <h4>这是一个图片标签提示文本示例</h4>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQAAAACoxAthAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAd2KE6QAAAAJcEhZcwAAFxEAABcRAcom8z8AAALbSURBVHja7Zs7coNADIblcUHpI3AUjgZH4yg+AiWFxwp67S5xMpN0i+ZX4XiMPprV6h3ifwsBAQIEyJ+RF7nMz+H4Yeb9zjQ1KjTyO3QmINkQf2TKh8JLHin4HA5l/XQdIJ0jC9HdEV5GebaO+ipVXuX0eSW6AUmM2N1/Hlf8UNZPNuUByMUQu/vyvZ6+uHEgqZHG8x/4oMoCMu/FbH4PFkAujdQUToxn9Ij/Ep+/3yL6/5b1AekHaUXwQDhy8sPztzpAkiHLuIXBiJ83E6rg8/D5zNtQ7j6QRIjHek3dT+UbkSqzVuIP+QTSNyIpXCMaxDWgr/6SXX3+fmvvPpAUiMb6rSRvS5O6692PUm475/xA+kRqJS4pnFbiQwXdPwxvApINiSDuoKVwNOqDppVqAiQZEu5C+m/38PM07k0XzhzFp+cH0hdiEh7AA/rkQVzVwvPbS4AkQyx1n6ONVptpPhdTg9m8HgeSC7GSzQ3Dk/najRGzKcn9BKRrxO6+TcREyunrRMwCuii/v7sLIJdHiqmw5wA+K3nFrfdM4LEXgwHSJ1IybQrl0lhT+bE3DiQT8mg8gPfDY09JzOlI5NbvBgMkCzIWI7G4LyUbRR/GnxI1CTyQHhEL3/c4fSJL2+rguwy4m+IdSBKEfTPNwaUdbrpnUM+/tQ1VIGkQMxXbTaI51l3u7NuJvnRqxgOkY8SSdtaVM/nVJyPuDcrpr49TLQYkB6KRXaeidSZifRiL+9ZOP62bAukT0fpri5lI9MZ9SsJvr9M/incgKZAqtm6qSw7q54vPt7u/NzYGJAlSl40dpOIozv81UCcjQHpF/Otct1PixH3E6f6/qcSB5EGW054Sc2mha6xvZQKSFYkEPnoy0Ur1YQq/gVwFeeoBj+YKyt44aS1G08/rpkAuj7jn1z8L1Waabab59rjIR7AA0hfiMse6kZ57yckNlNNv3DiQJMh/BQgQIED+KF+tl0BnErgX6gAAAABJRU5ErkJggg==" title="这是一个二维码"/>
+
+    <h4>这是一个图片标签高度和宽度属性的示例</h4>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQAAAACoxAthAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAd2KE6QAAAAJcEhZcwAAFxEAABcRAcom8z8AAALbSURBVHja7Zs7coNADIblcUHpI3AUjgZH4yg+AiWFxwp67S5xMpN0i+ZX4XiMPprV6h3ifwsBAQIEyJ+RF7nMz+H4Yeb9zjQ1KjTyO3QmINkQf2TKh8JLHin4HA5l/XQdIJ0jC9HdEV5GebaO+ipVXuX0eSW6AUmM2N1/Hlf8UNZPNuUByMUQu/vyvZ6+uHEgqZHG8x/4oMoCMu/FbH4PFkAujdQUToxn9Ij/Ep+/3yL6/5b1AekHaUXwQDhy8sPztzpAkiHLuIXBiJ83E6rg8/D5zNtQ7j6QRIjHek3dT+UbkSqzVuIP+QTSNyIpXCMaxDWgr/6SXX3+fmvvPpAUiMb6rSRvS5O6692PUm475/xA+kRqJS4pnFbiQwXdPwxvApINiSDuoKVwNOqDppVqAiQZEu5C+m/38PM07k0XzhzFp+cH0hdiEh7AA/rkQVzVwvPbS4AkQyx1n6ONVptpPhdTg9m8HgeSC7GSzQ3Dk/najRGzKcn9BKRrxO6+TcREyunrRMwCuii/v7sLIJdHiqmw5wA+K3nFrfdM4LEXgwHSJ1IybQrl0lhT+bE3DiQT8mg8gPfDY09JzOlI5NbvBgMkCzIWI7G4LyUbRR/GnxI1CTyQHhEL3/c4fSJL2+rguwy4m+IdSBKEfTPNwaUdbrpnUM+/tQ1VIGkQMxXbTaI51l3u7NuJvnRqxgOkY8SSdtaVM/nVJyPuDcrpr49TLQYkB6KRXaeidSZifRiL+9ZOP62bAukT0fpri5lI9MZ9SsJvr9M/incgKZAqtm6qSw7q54vPt7u/NzYGJAlSl40dpOIozv81UCcjQHpF/Otct1PixH3E6f6/qcSB5EGW054Sc2mha6xvZQKSFYkEPnoy0Ur1YQq/gVwFeeoBj+YKyt44aS1G08/rpkAuj7jn1z8L1Waabab59rjIR7AA0hfiMse6kZ57yckNlNNv3DiQJMh/BQgQIED+KF+tl0BnErgX6gAAAABJRU5ErkJggg==" width="100px" height="100px" />
+
+    <h4>这是一个图片标签的边框粗细示例</h4>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQAAAACoxAthAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAd2KE6QAAAAJcEhZcwAAFxEAABcRAcom8z8AAALbSURBVHja7Zs7coNADIblcUHpI3AUjgZH4yg+AiWFxwp67S5xMpN0i+ZX4XiMPprV6h3ifwsBAQIEyJ+RF7nMz+H4Yeb9zjQ1KjTyO3QmINkQf2TKh8JLHin4HA5l/XQdIJ0jC9HdEV5GebaO+ipVXuX0eSW6AUmM2N1/Hlf8UNZPNuUByMUQu/vyvZ6+uHEgqZHG8x/4oMoCMu/FbH4PFkAujdQUToxn9Ij/Ep+/3yL6/5b1AekHaUXwQDhy8sPztzpAkiHLuIXBiJ83E6rg8/D5zNtQ7j6QRIjHek3dT+UbkSqzVuIP+QTSNyIpXCMaxDWgr/6SXX3+fmvvPpAUiMb6rSRvS5O6692PUm475/xA+kRqJS4pnFbiQwXdPwxvApINiSDuoKVwNOqDppVqAiQZEu5C+m/38PM07k0XzhzFp+cH0hdiEh7AA/rkQVzVwvPbS4AkQyx1n6ONVptpPhdTg9m8HgeSC7GSzQ3Dk/najRGzKcn9BKRrxO6+TcREyunrRMwCuii/v7sLIJdHiqmw5wA+K3nFrfdM4LEXgwHSJ1IybQrl0lhT+bE3DiQT8mg8gPfDY09JzOlI5NbvBgMkCzIWI7G4LyUbRR/GnxI1CTyQHhEL3/c4fSJL2+rguwy4m+IdSBKEfTPNwaUdbrpnUM+/tQ1VIGkQMxXbTaI51l3u7NuJvnRqxgOkY8SSdtaVM/nVJyPuDcrpr49TLQYkB6KRXaeidSZifRiL+9ZOP62bAukT0fpri5lI9MZ9SsJvr9M/incgKZAqtm6qSw7q54vPt7u/NzYGJAlSl40dpOIozv81UCcjQHpF/Otct1PixH3E6f6/qcSB5EGW054Sc2mha6xvZQKSFYkEPnoy0Ur1YQq/gVwFeeoBj+YKyt44aS1G08/rpkAuj7jn1z8L1Waabab59rjIR7AA0hfiMse6kZ57yckNlNNv3DiQJMh/BQgQIED+KF+tl0BnErgX6gAAAABJRU5ErkJggg=="border="10"/>
+<!-------------------------------------------------------------------------------------->
+    <!--
+        路径：
+        （1）目录文件夹和根目录：
+             文件不能乱放，一定要集中存放在一个文件夹， 统一管理
+        （2）相对路径：以引用文件所在位置为参考基础，从而建立出目录路径。
+             同级相对路径：文件位于HTML文件同一级，如：<img src="img.png">
+             下级相对路径：文件位于HTML文件下一级，如：<img src="images/img.png">
+             上级相对路径：文件位于HTML文件上一级，如：<img src="../img.png">
+        （3）绝对路径：直接用磁盘目录来当路径
+    -->
+<!-------------------------------------------------------------------------------------->
+    <!--
+        超链接标签：
+        1.超链接语法规范
+        <a href="跳转目标" target="_blank">这里写需要附加超链接的文本</a>
+        herf：链接目标url地址
+        target：_blank（新建标签页）或_self（默认跳转方式）
+        2.链接分类
+        外部链接
+        内部链接
+    -->
+    <h4>这是一个超链接 示范</h4>
+    <a href="https://www.dreamyaurora.top:88/" target="_blank">官网</a>
+<!-------------------------------------------------------------------------------------->
+    <!--
+        
+    -->
+<!-------------------------------------------------------------------------------------->
+
+
+
+
+
+
+<!-------------------------------------------------------------------------------------->
 </body>
 </html>
