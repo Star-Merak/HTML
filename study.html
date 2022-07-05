@@ -187,10 +187,67 @@
     -->
 <!-------------------------------------------------------------------------------------->
 
+    <!--
+        表格：
+            1.1 表格的主要作用：展示数据
+            1.2 表格的基本语法
+                ①<table></table>用于定义表格标签。
+                ②<tr></tr>用于定义表格中的行，必须嵌套在<table></table>标签中。
+                ③<td></td>用于定义表格中的单元格，必须嵌套在<tr></tr>标签中。
+                ④字母td指表格数据（table data），即数据单元格内容。
+                <table>
+                    <tr>
+                        <td>单元格内的文字</td>
+                        ...
+                    </tr>
+                    ...
+                </table>
+            1.3 表头单元格，一般位于表格的第一行或第一列，表头单元格内的文字均居中加粗显示
+                用<th></th>来表示HTML表格部分的表头
+            1.4 表格标签属性，实际开发不常用，后面通过CSS来设置
+                现在学这个是为了后面学CSS做铺垫，这些属性字母基本和CSS的设置相同
+                更直观感受表格的外观形态
+                
+                
+    -->
+    <table align="center" border="1" cellpadding="10" cellspacing ="0">
+        <tr>
+            <th>属性名</th><th>属性值</th><th>描述</th>
+        </tr>
+        <tr>
+            <td  >align</td><td >Left、Center、Right</td><td >规定表格相对周围元素的对齐方式</td>
+        </tr>
+        <tr>
+            <td >border</td><td >1或""</td><td >规定表格是否有边框，默认为""，表示没有边框</td>
+        </tr>
+        <tr>
+            <td>cellpadding</td><td >像素值</td><td >规定单元格边沿与其内容之间的空白</td>
+        </tr>
+        <tr>
+            <td>cellspacing</td><td >像素值</td><td>规定单元格之间的空白，默认2像素</td>
+        </tr>
+        <tr>
+            <td>width</td><td>像素值或百分比</td><td >规定表格的宽度</td>
+        </tr>
+    </table>
 
-
-
-
+    <table align="center" border="1" cellspacing="0" cellpadding="1">
+        <tr align="center">
+            <th>排名</th>
+            <th>关键词</th>
+            <th>趋势</th>
+            <th>今日搜索</th>
+            <th>最近七日</th>
+            <th>相关链接</th>
+        </tr>
+        <tr align="center">
+            <td>1</td><td>鬼吹灯</td>
+            <td ><img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.51yuansu.com%2Fpic3%2Fcover%2F01%2F77%2F06%2F5966525571796_610.jpg&refer=http%3A%2F%2Fpic.51yuansu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1659622164&t=e86cc9227e6079cc6bc5df5425799df1" width="10px"></td>
+            <td>345</td>
+            <td>123</td>
+            <td><a href="https://cn.bing.com/images/search?q=%e9%ac%bc%e5%90%b9%e7%81%af&qpvt=%e9%ac%bc%e5%90%b9%e7%81%af&tsc=ImageHoverTitle&form=IGRE&first=1">图片</a>&nbsp;<a href="https://baike.baidu.com/item/%E9%AC%BC%E5%90%B9%E7%81%AF/10790">百科</a>&nbsp;<a href="https://jump2.bdimg.com/f?kw=%E9%AC%BC%E5%90%B9%E7%81%AF">贴吧</a></td>
+        </tr>
+    </table>
 
 <!-------------------------------------------------------------------------------------->
 </body>
