@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>星河书屋 - 书籍详情</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: #eef8ff;
+            color: #252936;
+            font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+        }
+        header {
+            min-height: 72px;
+            padding: 0 clamp(16px, 6vw, 96px);
+            background: #f7fcff;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .brand {
+            color: #0ea5e9;
+            font-size: 25px;
+            font-weight: 750;
+            text-decoration: none;
+            user-select: none;
+        }
+        nav { display: flex; gap: 22px; }
+        nav a { color: #0b8dcc; text-decoration: none; font-size: 15px; font-weight: 600; }
+        main {
+            width: min(960px, calc(100% - 32px));
+            margin: 34px auto 64px;
+        }
+        .panel {
+            background: #fff;
+            border: 1px solid #c7e8fb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 18px;
+        }
+        h1 { margin: 0 0 12px; font-size: clamp(30px, 5vw, 46px); }
+        h2 { margin: 0 0 16px; font-size: 22px; }
+        .meta { color: #667085; line-height: 1.8; }
+        .summary { color: #344054; line-height: 1.85; }
+        .tag {
+            display: inline-flex;
+            margin: 10px 8px 0 0;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #e8f7ff;
+            color: #087fb8;
+            font-size: 13px;
+        }
+        textarea {
+            width: 100%;
+            min-height: 96px;
+            border: 1px solid #cfd6df;
+            border-radius: 6px;
+            padding: 12px;
+            font: inherit;
+            resize: vertical;
+        }
+        button {
+            margin-top: 12px;
+            border: 0;
+            border-radius: 6px;
+            padding: 10px 16px;
+            background: #0ea5e9;
+            color: #fff;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .comment {
+            border-top: 1px solid #edf2f7;
+            padding: 14px 0;
+        }
+        .comment:first-child { border-top: 0; }
+        .message { color: #667085; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <header>
+        <a class="brand" href="index.html">星河书屋</a>
+        <nav>
+            <a href="index.html">首页</a>
+            <a href="login.html">登录</a>
+        </nav>
+    </header>
+    <main>
+        <section class="panel" id="bookPanel"></section>
+        <section class="panel">
+            <h2>评论</h2>
+            <form id="commentForm">
+                <textarea id="content" placeholder="登录后发表你的想法，命中过滤词的评论会进入人工审核。"></textarea>
+                <button type="submit">发表评论</button>
+            </form>
+            <div class="message" id="commentMessage"></div>
+            <div id="comments"></div>
+        </section>
+    </main>
+    <script>
+        const bookId = new URLSearchParams(location.search).get("id");
+        function escapeHtml(value) {
+            return String(value ?? "").replace(/[&<>"']/g, char => ({
+                "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
+            }[char]));
+        }
+        function formatDate(value) {
+            return value ? new Date(value).toLocaleString("zh-CN") : "未填写";
+        }
+        async function loadBook() {
+            const response = await fetch(`/api/books/${bookId}`);
+            const data = await response.json();
+            if (!response.ok) {
+                document.getElementById("bookPanel").textContent = data.error || "书籍不存在";
+                return;
+            }
+            const book = data.book;
+            document.title = `星河书屋 - ${book.title}`;
+            document.getElementById("bookPanel").innerHTML = `
+                <h1>${escapeHtml(book.title)}</h1>
+                <div class="meta">
+                    作者：${escapeHtml(book.author)} · ${escapeHtml(book.category)} · ${escapeHtml(book.status)}<br>
+                    最新章节：${escapeHtml(book.latest_chapter)}<br>
+                    录入时间：${formatDate(book.created_at)} · 写作完成时间：${formatDate(book.finished_at)}
+                </div>
+                <p class="summary">${escapeHtml(book.summary)}</p>
+                <div>${book.tags.map(tag => `<span class="tag">${escapeHtml(tag.name)}</span>`).join("")}</div>
+            `;
+        }
+        async function loadComments() {
+            const response = await fetch(`/api/books/${bookId}/comments`);
+            const data = await response.json();
+            document.getElementById("comments").innerHTML = data.comments.length
+                ? data.comments.map(comment => `
+                    <article class="comment">
+                        <strong>${escapeHtml(comment.username)}</strong>
+                        <div class="meta">${formatDate(comment.created_at)}</div>
+                        <p>${escapeHtml(comment.content)}</p>
+                    </article>
+                `).join("")
+                : '<p class="message">暂无评论。</p>';
+        }
+        document.getElementById("commentForm").addEventListener("submit", async event => {
+            event.preventDefault();
+            const message = document.getElementById("commentMessage");
+            const response = await fetch(`/api/books/${bookId}/comments`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content: document.getElementById("content").value.trim() })
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                message.textContent = data.error || "评论失败，请先登录。";
+                return;
+            }
+            document.getElementById("content").value = "";
+            message.textContent = data.status === "pending" ? "评论已提交，等待人工审核。" : "评论已发布。";
+            await loadComments();
+        });
+        loadBook();
+        loadComments();
+    </script>
+</body>
+</html>

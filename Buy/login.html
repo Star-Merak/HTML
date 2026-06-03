@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>星河书屋 - 登录</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: #eef8ff;
+            color: #252936;
+            font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+        }
+        .auth-card {
+            width: min(420px, calc(100% - 32px));
+            background: #fff;
+            border: 1px solid #c7e8fb;
+            border-radius: 8px;
+            padding: 28px;
+            box-shadow: 0 16px 36px rgba(14, 165, 233, .12);
+        }
+        h1 { margin: 0 0 8px; font-size: 26px; color: #0ea5e9; }
+        p { margin: 0 0 22px; color: #667085; line-height: 1.7; }
+        label { display: block; margin: 14px 0 6px; color: #475467; font-size: 14px; }
+        input {
+            width: 100%;
+            border: 1px solid #cfd6df;
+            border-radius: 6px;
+            padding: 11px 12px;
+            font: inherit;
+        }
+        button {
+            width: 100%;
+            margin-top: 18px;
+            border: 0;
+            border-radius: 6px;
+            padding: 12px 16px;
+            background: #0ea5e9;
+            color: #fff;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .links {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 16px;
+        }
+        a { color: #0b8dcc; text-decoration: none; font-weight: 600; }
+        .message { min-height: 22px; margin-top: 14px; color: #b42318; }
+    </style>
+</head>
+<body>
+    <main class="auth-card">
+        <h1>星河书屋登录</h1>
+        <p>管理员可进入后台，普通用户登录后可发表评论。</p>
+        <form id="loginForm">
+            <label for="username">用户名</label>
+            <input id="username" autocomplete="username" required />
+            <label for="password">密码</label>
+            <input id="password" type="password" autocomplete="current-password" required />
+            <button type="submit">登录</button>
+        </form>
+        <div class="links">
+            <a href="index.html">返回首页</a>
+            <a href="register.html">使用注册码注册</a>
+        </div>
+        <div class="message" id="message"></div>
+    </main>
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async event => {
+            event.preventDefault();
+            const message = document.getElementById("message");
+            message.textContent = "";
+            const response = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username: document.getElementById("username").value.trim(),
+                    password: document.getElementById("password").value
+                })
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                message.textContent = data.error || "登录失败";
+                return;
+            }
+            location.href = data.user.role === "user" ? "index.html" : "/console";
+        });
+    </script>
+</body>
+</html>

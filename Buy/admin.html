@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>星河书屋 - 后台管理</title>
+    <style>
+        * { box-sizing: border-box; }
+        :root{
+            --primary: #0ea5e9;
+            --primary-600: #0b8dcc;
+            --bg: #eef8ff;
+            --surface: #ffffff;
+            --text: #252936;
+            --muted: #6b7280;
+            --aside-bg: #09232f;
+            --nav-active-bg: #073044;
+            --btn-primary: #0ea5e9;
+            --btn-secondary-bg: #e8edf3;
+            --danger: #b42318;
+            --success: #087443;
+        }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+        }
+        .app {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 232px minmax(0, 1fr);
+        }
+        aside {
+            background: var(--surface);
+            color: var(--text);
+            padding: 22px 16px;
+            border-right: 1px solid #e1e5ea;
+        }
+        .brand {
+            display: block;
+            margin: 0 0 22px;
+            color: var(--primary);
+            font-size: 21px;
+            font-weight: 750;
+            text-decoration: none;
+        }
+        .nav-button {
+            width: 100%;
+            border: 1px solid #e1e5ea;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            padding: 11px 12px;
+            background: var(--surface);
+            color: var(--text);
+            text-align: left;
+            font: inherit;
+            cursor: pointer;
+            box-shadow: 0 1px 0 rgba(2,6,23,0.03);
+        }
+        .nav-button.active,
+        .nav-button:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: rgba(255,255,255,0.08);
+        }
+        main {
+            padding: 24px;
+            overflow: auto;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        h1 { margin: 0; font-size: 26px; }
+        h2 { margin: 0 0 16px; font-size: 20px; }
+        .panel {
+            background: var(--surface);
+            border: 1px solid #e1e5ea;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .stat {
+            background: var(--surface);
+            border: 1px solid #e1e5ea;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .stat span { color: var(--muted); font-size: 13px; }
+        .stat strong { display: block; margin-top: 8px; font-size: 26px; }
+        .grid-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+        .full { grid-column: 1 / -1; }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+        input, select, textarea {
+            width: 100%;
+            border: 1px solid #cfd6df;
+            border-radius: 6px;
+            padding: 10px 12px;
+            background: var(--surface);
+            font: inherit;
+        }
+        textarea { min-height: 92px; resize: vertical; }
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+        button, .link-button {
+            border: 0;
+            border-radius: 6px;
+            padding: 9px 13px;
+            background: var(--btn-primary);
+            color: #fff;
+            font: inherit;
+            font-weight: 650;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        button.secondary { background: var(--btn-secondary-bg); color: #384152; }
+        button.danger { background: var(--danger); }
+        button.success { background: var(--success); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 11px 10px;
+            border-bottom: 1px solid #e1e5ea;
+            text-align: left;
+            vertical-align: top;
+        }
+        th { background: #f8fafc; color: #475467; }
+        .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .hidden { display: none; }
+        .message { min-height: 24px; color: #087443; }
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .tag-check {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            padding: 7px 10px;
+            border: 1px solid #cfd6df;
+            border-radius: 999px;
+        }
+        .tag-check input { width: auto; }
+        @media (max-width: 900px) {
+            .app { grid-template-columns: 1fr; }
+            aside { position: static; }
+            .stats, .grid-form { grid-template-columns: 1fr; }
+            table { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <aside>
+            <a class="brand" href="index.html">星河书屋后台</a>
+            <button class="nav-button active" data-view="dashboard">仪表盘</button>
+            <button class="nav-button" data-view="books">书籍管理</button>
+            <button class="nav-button" data-view="tags">标签管理</button>
+            <button class="nav-button" data-view="users">用户管理</button>
+            <button class="nav-button" data-view="comments">评论管理</button>
+            <button class="nav-button" data-view="blocked">过滤词管理</button>
+        </aside>
+        <main>
+            <header>
+                <h1 id="pageTitle">仪表盘</h1>
+                <div>
+                    <span id="currentUser"></span>
+                    <button class="secondary" id="logoutBtn" type="button">退出</button>
+                </div>
+            </header>
+            <div class="message" id="message"></div>
+
+            <section id="dashboardView">
+                <div class="stats">
+                    <div class="stat"><span>书籍总数</span><strong id="statBooks">0</strong></div>
+                    <div class="stat"><span>用户总数</span><strong id="statUsers">0</strong></div>
+                    <div class="stat"><span>待审核评论</span><strong id="statComments">0</strong></div>
+                    <div class="stat"><span>连载中</span><strong id="statSerial">0</strong></div>
+                </div>
+            </section>
+
+            <section id="booksView" class="hidden">
+                <div class="panel">
+                    <h2 id="bookFormTitle">新增书籍</h2>
+                    <form id="bookForm" class="grid-form">
+                        <input id="bookId" type="hidden" />
+                        <div><label for="title">书名</label><input id="title" required /></div>
+                        <div><label for="author">作者</label><input id="author" required /></div>
+                        <div><label for="category">分类</label><input id="category" required /></div>
+                        <div>
+                            <label for="status">状态</label>
+                            <select id="status"><option>连载中</option><option>已完结</option><option>暂停更新</option></select>
+                        </div>
+                        <div><label for="createdAt">录入时间</label><input id="createdAt" type="datetime-local" /></div>
+                        <div><label for="finishedAt">写作完成时间</label><input id="finishedAt" type="datetime-local" /></div>
+                        <div class="full"><label for="latestChapter">最新章节</label><input id="latestChapter" required /></div>
+                        <div class="full"><label for="summary">小说简介</label><textarea id="summary" required></textarea></div>
+                        <div class="full">
+                            <label>标签</label>
+                            <div class="tag-list" id="bookTagChecks"></div>
+                        </div>
+                        <label class="tag-check"><input id="featured" type="checkbox" /> 今日推荐</label>
+                        <div class="toolbar full">
+                            <button type="submit">保存书籍</button>
+                            <button class="secondary" type="button" id="resetBookBtn">清空</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel"><h2>书籍列表</h2><div id="booksTable"></div></div>
+            </section>
+
+            <section id="tagsView" class="hidden">
+                <div class="panel">
+                    <h2>新增/编辑标签</h2>
+                    <form id="tagForm" class="grid-form">
+                        <input id="tagId" type="hidden" />
+                        <div><label for="tagName">标签名</label><input id="tagName" required /></div>
+                        <div><label for="tagSlug">Slug</label><input id="tagSlug" /></div>
+                        <div class="toolbar full">
+                            <button type="submit">保存标签</button>
+                            <button class="secondary" type="button" id="resetTagBtn">清空</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel"><h2>标签列表</h2><div id="tagsTable"></div></div>
+            </section>
+
+            <section id="usersView" class="hidden">
+                <div class="panel">
+                    <h2>生成注册码</h2>
+                    <form id="codeForm" class="grid-form">
+                        <div><label for="codeValue">注册码（留空自动生成）</label><input id="codeValue" /></div>
+                        <div><label for="codeExpiresAt">过期时间</label><input id="codeExpiresAt" type="datetime-local" /></div>
+                        <div class="toolbar full"><button type="submit">生成注册码</button></div>
+                    </form>
+                </div>
+                <div class="panel"><h2>用户列表</h2><div id="usersTable"></div></div>
+                <div class="panel"><h2>注册码列表</h2><div id="codesTable"></div></div>
+            </section>
+
+            <section id="commentsView" class="hidden">
+                <div class="panel"><h2>评论列表</h2><div id="commentsTable"></div></div>
+            </section>
+
+            <section id="blockedView" class="hidden">
+                <div class="panel">
+                    <h2>新增过滤词</h2>
+                    <form id="wordForm" class="grid-form">
+                        <div><label for="wordValue">过滤词</label><input id="wordValue" required /></div>
+                        <div class="toolbar"><button type="submit">添加</button></div>
+                    </form>
+                </div>
+                <div class="panel"><h2>过滤词列表</h2><div id="wordsTable"></div></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 注册码生成弹窗（默认隐藏） -->
+    <div id="codePopupOverlay" class="hidden" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:9999;">
+        <div id="codePopupBackdrop" style="position:absolute;inset:0;background:rgba(16,24,32,0.18);"></div>
+        <div id="codePopup" style="position:relative;display:inline-block;background:#0ea5e9;color:#fff;border-radius:10px;padding:8px 12px;border:none;box-shadow:0 18px 40px rgba(2,6,23,0.12);transform:scale(.96);opacity:0;transition:transform .18s ease,opacity .18s ease;white-space:nowrap;max-width:calc(100% - 40px);">
+            <div id="codePopupContent" style="display:inline-flex;align-items:center;gap:8px;color:inherit;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;">
+                <!-- 内容将由 JS 动态填充为单行：例如：注册码已生成：STAR-2026 （3） [复制] -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const state = { user: null, books: [], tags: [], users: [], comments: [], words: [], codes: [] };
+        const views = ["dashboard", "books", "tags", "users", "comments", "blocked"];
+
+        function escapeHtml(value) {
+            return String(value ?? "").replace(/[&<>"']/g, char => ({
+                "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
+            }[char]));
+        }
+        function setMessage(text, danger = false) {
+            const message = document.getElementById("message");
+            message.style.color = danger ? "#b42318" : "#087443";
+            message.textContent = text || "";
+        }
+        // 注册码弹窗逻辑
+        let __codePopupTimer = null;
+        function showCodePopup(code) {
+            const overlay = document.getElementById('codePopupOverlay');
+            const popup = document.getElementById('codePopup');
+            const content = document.getElementById('codePopupContent');
+            let remaining = 5;
+            // 单行内容 + 复制按钮（按钮紧随注册码，不撑开弹窗）
+            content.innerHTML = `
+                <span style="display:inline-flex;align-items:center;gap:8px;min-width:0;">
+                    <span style="width:10px;height:10px;border-radius:2px;background:rgba(255,255,255,0.95);display:inline-block"></span>
+                    <strong style="font-size:15px;margin-right:4px;">注册码已生成：</strong>
+                    <span id="codeText" style="font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(code)}</span>
+                    <span style="margin-left:6px;opacity:.95;">（<span id="codePopupCountdown">${remaining}</span>）</span>
+                </span>
+                <button id="codeCopyBtn" style="margin-left:8px;background:rgba(255,255,255,0.12);border:0;color:#fff;padding:6px 8px;border-radius:6px;cursor:pointer;flex:0 0 auto">复制</button>
+            `;
+            overlay.classList.remove('hidden');
+            overlay.style.display = 'flex';
+            // animate in
+            popup.style.transform = 'scale(.96)'; popup.style.opacity = '0';
+            requestAnimationFrame(() => { popup.style.transform = 'scale(1)'; popup.style.opacity = '1'; });
+
+            // 复制按钮
+            const copyBtn = document.getElementById('codeCopyBtn');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', async (ev) => {
+                    ev.stopPropagation();
+                    try {
+                        await navigator.clipboard.writeText(code);
+                        copyBtn.textContent = '已复制';
+                        setTimeout(() => copyBtn.textContent = '复制', 1500);
+                    } catch (err) {
+                        const ta = document.createElement('textarea');
+                        ta.value = code;
+                        document.body.appendChild(ta);
+                        ta.select();
+                        try { document.execCommand('copy'); copyBtn.textContent = '已复制'; } catch (e) {}
+                        ta.remove();
+                        setTimeout(() => copyBtn.textContent = '复制', 1500);
+                    }
+                });
+            }
+
+            function tick() {
+                remaining -= 1;
+                const el = document.getElementById('codePopupCountdown');
+                if (el) el.textContent = String(remaining);
+                if (remaining <= 0) hideCodePopup();
+            }
+            __codePopupTimer = setInterval(tick, 1000);
+        }
+        function hideCodePopup() {
+            const overlay = document.getElementById('codePopupOverlay');
+            const popup = document.getElementById('codePopup');
+            if (__codePopupTimer) { clearInterval(__codePopupTimer); __codePopupTimer = null; }
+            // animate out
+            popup.style.transform = 'scale(.96)'; popup.style.opacity = '0';
+            setTimeout(() => { overlay.classList.add('hidden'); overlay.style.display = 'none'; }, 180);
+        }
+        // 点击外部关闭
+        document.getElementById('codePopupOverlay').addEventListener('click', (e) => {
+            const popup = document.getElementById('codePopup');
+            if (!popup.contains(e.target)) hideCodePopup();
+        });
+        function toLocalInput(value) {
+            if (!value) return "";
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return "";
+            return new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+        }
+        function fromLocalInput(value) {
+            return value ? new Date(value).toISOString() : "";
+        }
+        async function api(url, options = {}) {
+            const response = await fetch(url, {
+                ...options,
+                headers: { "Content-Type": "application/json", ...(options.headers || {}) }
+            });
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(data.error || "请求失败");
+            return data;
+        }
+        function table(headers, rows) {
+            return `<table><thead><tr>${headers.map(item => `<th>${item}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table>`;
+        }
+        async function ensureLogin() {
+            const data = await api("/api/auth/me");
+            if (!data.user || data.user.role === "user") {
+                location.href = "login.html";
+                return false;
+            }
+            state.user = data.user;
+            document.getElementById("currentUser").textContent = `${data.user.username}（${data.user.role}）`;
+            return true;
+        }
+        async function loadAll() {
+            const requests = [
+                api("/api/admin/stats"),
+                api("/api/books"),
+                api("/api/tags"),
+                api("/api/comments"),
+                api("/api/blocked-words")
+            ];
+            if (state.user.role === "admin") {
+                requests.push(api("/api/users"), api("/api/registration-codes"));
+            }
+            const [stats, books, tags, comments, words, users, codes] = await Promise.all(requests);
+            document.getElementById("statBooks").textContent = stats.books;
+            document.getElementById("statUsers").textContent = stats.users;
+            document.getElementById("statComments").textContent = stats.pendingComments;
+            document.getElementById("statSerial").textContent = stats.serialBooks;
+            state.books = books.books;
+            state.tags = tags.tags;
+            state.comments = comments.comments;
+            state.words = words.words;
+            state.users = users?.users || [];
+            state.codes = codes?.codes || [];
+            renderAll();
+        }
+        function renderAll() {
+            renderTagChecks();
+            renderBooks();
+            renderTags();
+            renderComments();
+            renderWords();
+            renderUsers();
+        }
+        function renderTagChecks(selected = []) {
+            document.getElementById("bookTagChecks").innerHTML = state.tags.map(tag => `
+                <label class="tag-check">
+                    <input type="checkbox" value="${tag.id}" ${selected.includes(tag.id) ? "checked" : ""}>
+                    ${escapeHtml(tag.name)}
+                </label>
+            `).join("") || "请先添加标签。";
+        }
+        function renderBooks() {
+            document.getElementById("booksTable").innerHTML = table(["书名", "作者", "状态", "标签", "时间", "操作"], state.books.map(book => `
+                <tr>
+                    <td>${book.featured ? "★ " : ""}${escapeHtml(book.title)}</td>
+                    <td>${escapeHtml(book.author)}</td>
+                    <td>${escapeHtml(book.status)}</td>
+                    <td>${book.tags.map(tag => escapeHtml(tag.name)).join("、")}</td>
+                    <td>录入：${new Date(book.created_at).toLocaleString("zh-CN")}<br>完成：${book.finished_at ? new Date(book.finished_at).toLocaleString("zh-CN") : "未填写"}</td>
+                    <td class="actions">
+                        <button class="secondary" type="button" onclick="editBook(${book.id})">编辑</button>
+                        <button class="danger" type="button" onclick="deleteBook(${book.id})">删除</button>
+                    </td>
+                </tr>
+            `));
+        }
+        function renderTags() {
+            document.getElementById("tagsTable").innerHTML = table(["标签", "Slug", "关联书籍", "操作"], state.tags.map(tag => `
+                <tr>
+                    <td>${escapeHtml(tag.name)}</td>
+                    <td>${escapeHtml(tag.slug)}</td>
+                    <td>${tag.book_count}</td>
+                    <td class="actions">
+                        <button class="secondary" type="button" onclick="editTag(${tag.id})">编辑</button>
+                        <button class="danger" type="button" onclick="deleteTag(${tag.id})">删除</button>
+                    </td>
+                </tr>
+            `));
+        }
+        function renderComments() {
+            document.getElementById("commentsTable").innerHTML = table(["书籍", "用户", "内容", "状态", "原因", "操作"], state.comments.map(comment => `
+                <tr>
+                    <td>${escapeHtml(comment.book_title)}</td>
+                    <td>${escapeHtml(comment.username)}</td>
+                    <td>${escapeHtml(comment.content)}</td>
+                    <td>${escapeHtml(comment.status)}</td>
+                    <td>${escapeHtml(comment.filter_reason || "")}</td>
+                    <td class="actions">
+                        <button class="success" type="button" onclick="reviewComment(${comment.id}, 'approve')">通过</button>
+                        <button class="secondary" type="button" onclick="reviewComment(${comment.id}, 'reject')">驳回</button>
+                        <button class="danger" type="button" onclick="deleteComment(${comment.id})">删除</button>
+                    </td>
+                </tr>
+            `));
+        }
+        function renderWords() {
+            document.getElementById("wordsTable").innerHTML = table(["过滤词", "级别", "创建时间", "操作"], state.words.map(word => `
+                <tr>
+                    <td>${escapeHtml(word.word)}</td>
+                    <td>${escapeHtml(word.level)}</td>
+                    <td>${new Date(word.created_at).toLocaleString("zh-CN")}</td>
+                    <td><button class="danger" type="button" onclick="deleteWord(${word.id})">删除</button></td>
+                </tr>
+            `));
+        }
+        function renderUsers() {
+            if (state.user.role !== "admin") {
+                document.getElementById("usersView").innerHTML = '<div class="panel">只有管理员可以管理用户。</div>';
+                return;
+            }
+            document.getElementById("usersTable").innerHTML = table(["用户名", "角色", "状态", "注册时间", "操作"], state.users.map(user => `
+                <tr>
+                    <td>${escapeHtml(user.username)}</td>
+                    <td>
+                        <select onchange="updateUserRole(${user.id}, this.value)">
+                            ${["admin", "editor", "user"].map(role => `<option ${user.role === role ? "selected" : ""}>${role}</option>`).join("")}
+                        </select>
+                    </td>
+                    <td>${escapeHtml(user.status)}</td>
+                    <td>${new Date(user.created_at).toLocaleString("zh-CN")}</td>
+                    <td><button class="secondary" type="button" onclick="toggleUser(${user.id}, '${user.status === "active" ? "disabled" : "active"}')">${user.status === "active" ? "禁用" : "启用"}</button></td>
+                </tr>
+            `));
+            document.getElementById("codesTable").innerHTML = table(["注册码", "状态", "使用者", "创建时间"], state.codes.map(code => `
+                <tr>
+                    <td>${escapeHtml(code.code)}</td>
+                    <td>${escapeHtml(code.status)}</td>
+                    <td>${escapeHtml(code.used_by || "")}</td>
+                    <td>${new Date(code.created_at).toLocaleString("zh-CN")}</td>
+                </tr>
+            `));
+        }
+        function switchView(name) {
+            views.forEach(view => document.getElementById(`${view}View`).classList.toggle("hidden", view !== name));
+            document.querySelectorAll(".nav-button").forEach(button => button.classList.toggle("active", button.dataset.view === name));
+            document.getElementById("pageTitle").textContent = document.querySelector(`[data-view="${name}"]`).textContent;
+        }
+        function resetBookForm() {
+            document.getElementById("bookForm").reset();
+            document.getElementById("bookId").value = "";
+            document.getElementById("bookFormTitle").textContent = "新增书籍";
+            renderTagChecks();
+        }
+        window.editBook = id => {
+            const book = state.books.find(item => item.id === id);
+            if (!book) return;
+            document.getElementById("bookFormTitle").textContent = "编辑书籍";
+            document.getElementById("bookId").value = book.id;
+            document.getElementById("title").value = book.title;
+            document.getElementById("author").value = book.author;
+            document.getElementById("category").value = book.category;
+            document.getElementById("status").value = book.status;
+            document.getElementById("latestChapter").value = book.latest_chapter;
+            document.getElementById("summary").value = book.summary;
+            document.getElementById("createdAt").value = toLocalInput(book.created_at);
+            document.getElementById("finishedAt").value = toLocalInput(book.finished_at);
+            document.getElementById("featured").checked = book.featured;
+            renderTagChecks(book.tags.map(tag => tag.id));
+            scrollTo({ top: 0, behavior: "smooth" });
+        };
+        window.deleteBook = async id => {
+            if (!confirm("确定删除这本书吗？")) return;
+            await api(`/api/books/${id}`, { method: "DELETE" });
+            await loadAll();
+        };
+        window.editTag = id => {
+            const tag = state.tags.find(item => item.id === id);
+            document.getElementById("tagId").value = tag.id;
+            document.getElementById("tagName").value = tag.name;
+            document.getElementById("tagSlug").value = tag.slug;
+        };
+        window.deleteTag = async id => {
+            if (!confirm("确定删除这个标签吗？")) return;
+            try {
+                await api(`/api/tags/${id}`, { method: "DELETE" });
+                await loadAll();
+            } catch (error) {
+                setMessage(error.message, true);
+            }
+        };
+        window.reviewComment = async (id, action) => {
+            await api(`/api/comments/${id}/${action}`, { method: "PUT" });
+            await loadAll();
+        };
+        window.deleteComment = async id => {
+            if (!confirm("确定删除这条评论吗？")) return;
+            await api(`/api/comments/${id}`, { method: "DELETE" });
+            await loadAll();
+        };
+        window.deleteWord = async id => {
+            await api(`/api/blocked-words/${id}`, { method: "DELETE" });
+            await loadAll();
+        };
+        window.updateUserRole = async (id, role) => {
+            await api(`/api/users/${id}`, { method: "PUT", body: JSON.stringify({ role }) });
+            await loadAll();
+        };
+        window.toggleUser = async (id, status) => {
+            await api(`/api/users/${id}/status`, { method: "PUT", body: JSON.stringify({ status }) });
+            await loadAll();
+        };
+        document.querySelectorAll(".nav-button").forEach(button => button.addEventListener("click", () => switchView(button.dataset.view)));
+        document.getElementById("logoutBtn").addEventListener("click", async () => {
+            await api("/api/auth/logout", { method: "POST" });
+            location.href = "login.html";
+        });
+        document.getElementById("resetBookBtn").addEventListener("click", resetBookForm);
+        document.getElementById("resetTagBtn").addEventListener("click", () => document.getElementById("tagForm").reset());
+        document.getElementById("bookForm").addEventListener("submit", async event => {
+            event.preventDefault();
+            const id = document.getElementById("bookId").value;
+            const body = {
+                title: document.getElementById("title").value,
+                author: document.getElementById("author").value,
+                category: document.getElementById("category").value,
+                status: document.getElementById("status").value,
+                latest_chapter: document.getElementById("latestChapter").value,
+                summary: document.getElementById("summary").value,
+                created_at: fromLocalInput(document.getElementById("createdAt").value),
+                finished_at: fromLocalInput(document.getElementById("finishedAt").value),
+                featured: document.getElementById("featured").checked,
+                tagIds: [...document.querySelectorAll("#bookTagChecks input:checked")].map(input => Number(input.value))
+            };
+            await api(id ? `/api/books/${id}` : "/api/books", {
+                method: id ? "PUT" : "POST",
+                body: JSON.stringify(body)
+            });
+            resetBookForm();
+            await loadAll();
+            setMessage("书籍已保存。");
+        });
+        document.getElementById("tagForm").addEventListener("submit", async event => {
+            event.preventDefault();
+            const id = document.getElementById("tagId").value;
+            await api(id ? `/api/tags/${id}` : "/api/tags", {
+                method: id ? "PUT" : "POST",
+                body: JSON.stringify({
+                    name: document.getElementById("tagName").value,
+                    slug: document.getElementById("tagSlug").value
+                })
+            });
+            document.getElementById("tagForm").reset();
+            document.getElementById("tagId").value = "";
+            await loadAll();
+        });
+        document.getElementById("codeForm").addEventListener("submit", async event => {
+            event.preventDefault();
+            const data = await api("/api/registration-codes", {
+                method: "POST",
+                body: JSON.stringify({
+                    code: document.getElementById("codeValue").value.trim(),
+                    expires_at: fromLocalInput(document.getElementById("codeExpiresAt").value)
+                })
+            });
+            // 仅在注册码管理分区显示弹窗
+            switchView('users');
+            showCodePopup(data.code);
+            document.getElementById("codeForm").reset();
+            await loadAll();
+        });
+        document.getElementById("wordForm").addEventListener("submit", async event => {
+            event.preventDefault();
+            await api("/api/blocked-words", {
+                method: "POST",
+                body: JSON.stringify({ word: document.getElementById("wordValue").value.trim() })
+            });
+            document.getElementById("wordForm").reset();
+            await loadAll();
+        });
+        ensureLogin().then(ok => ok && loadAll()).catch(() => location.href = "login.html");
+    </script>
+</body>
+</html>

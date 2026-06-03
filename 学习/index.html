@@ -1,0 +1,970 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML 标签图解学习</title>
+ 
+    <!-- 全局基础样式：页面基础样式与整体布局 -->
+    <style>
+      /* ========== 2. 页面布局模块 ========== */
+      /* 全局盒模型设置，确保元素尺寸计算一致 */
+      * {
+        box-sizing: border-box;
+      }
+
+      /* 页面主体基础样式：间距、字体、背景和文本颜色 */
+      body {
+        margin: 0;
+        font-family: Arial, "Microsoft YaHei", sans-serif;
+        background: #f4f7fb;
+        color: #1f2937;
+        line-height: 1.7;
+      }
+
+      /* 页面容器：最大宽度、自动居中和内边距 */
+      .page {
+        width: min(1280px, calc(100% - 24px));
+        margin: 0 auto;
+        padding: 32px 0 56px;
+      }
+
+      /* 页眉区域：标题和描述文本居中 */
+      .page-header {
+        margin-bottom: 28px;
+        text-align: center;
+      }
+
+      /* 主标题样式：颜色和字号 */
+      .page-header__title {
+        margin: 0 0 10px;
+        color: #111827;
+        font-size: 34px;
+      }
+
+      /* 说明文本样式：颜色与字号 */
+      .page-header__text {
+        margin: 0;
+        color: #5b6472;
+        font-size: 16px;
+      }
+
+      /* ========== 3. 章节模块 ========== */
+      /* 章节容器样式：边框、圆角和背景 */
+      .module-section {
+        width: 100%;
+        min-width: 0;
+        margin-top: 24px;
+        padding: 22px;
+        border: 2px solid #d6deea;
+        border-radius: 8px;
+        background: #ffffff;
+      }
+
+      /* 章节标题：底部边框和颜色 */
+      .module-section__title {
+        margin: 0 0 16px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #edf1f7;
+        color: #d12f2f;
+        font-size: 24px;
+      }
+
+      /* 章节文本：颜色和间距 */
+      .module-section__text {
+        margin: 0 0 14px;
+        color: #475467;
+      }
+
+      /* ========== 4. 文档结构图模块 ========== */
+      /* 文档结构容器：边框和背景 */
+      .structure-diagram {
+        width: 100%;
+        min-width: 0;
+        padding: 18px;
+        border: 2px solid #333;
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      /* 结构盒子：外层边框、圆角和背景 */
+      .structure-box {
+        width: 100%;
+        min-width: 0;
+        margin: 14px 0;
+        padding: 16px;
+        border: 2px solid #4a90e2;
+        border-radius: 6px;
+        background: #eef6ff;
+      }
+
+      /* 内部结构盒子：缩进和背景 */
+      .structure-box--inner {
+        width: calc(100% - clamp(10px, 3vw, 28px));
+        margin-left: clamp(10px, 3vw, 28px);
+        border-color: #f5a623;
+        background: #fff8e6;
+      }
+
+      /* 主体结构盒子：特殊边框颜色和背景 */
+      .structure-box--body {
+        border-color: #2ecc71;
+        background: #ecfff2;
+      }
+
+      /* 结构标签：标签样式和字体 */
+      .structure-box__tag {
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 8px;
+        padding: 4px 10px;
+        border-radius: 4px;
+        background: #4a90e2;
+        color: #fff;
+        font-family: Consolas, "Courier New", monospace;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+      }
+
+      /* 内部结构标签颜色 */
+      .structure-box--inner .structure-box__tag {
+        background: #f5a623;
+      }
+
+      /* 主体结构标签颜色 */
+      .structure-box--body .structure-box__tag {
+        background: #2ecc71;
+      }
+
+      /* ========== 5. 标签卡片模块 ========== */
+      /* 卡片网格布局：响应式列 */
+      .card-grid {
+        display: grid;
+        width: 100%;
+        min-width: 0;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+        gap: 16px;
+      }
+
+      /* 结构盒子内部卡片网格：更小列宽 */
+      .structure-box .card-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+      }
+
+      /* 标签卡片：结构和背景 */
+      .tag-card {
+        display: flex;
+        min-width: 0;
+        width: 100%;
+        flex-direction: column;
+        overflow: hidden;
+        border: 2px solid #d8e3f0;
+        border-radius: 8px;
+        background: #fbfdff;
+      }
+
+      /* 卡片头部：可视分隔和内边距 */
+      .tag-card__header {
+        padding: 12px 14px;
+        border-bottom: 2px solid #d8e3f0;
+        background: #edf5ff;
+      }
+
+      /* 卡片标题样式 */
+      .tag-card__title {
+        margin: 0;
+        color: #1d4f91;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 20px;
+        overflow-wrap: anywhere;
+      }
+
+      /* 卡片正文区域：内边距 */
+      .tag-card__body {
+        min-width: 0;
+        padding: 14px;
+      }
+
+      /* 卡片正文段落：段落间距 */
+      .tag-card__body p {
+        margin: 0 0 10px;
+        overflow-wrap: anywhere;
+      }
+
+      /* 最后一个段落去除底部间距 */
+      .tag-card__body p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* ========== 6. 小组件模块 ========== */
+      /* 信息标签样式 */
+      .info-label {
+        display: inline-block;
+        margin-right: 6px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        background: #1d4f91;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      /* 行内代码样式 */
+      .inline-code {
+        display: inline-block;
+        max-width: 100%;
+        margin: 3px 4px 3px 0;
+        padding: 2px 7px;
+        border-radius: 4px;
+        background: #f9f2f4;
+        color: #c7254e;
+        font-family: Consolas, "Courier New", monospace;
+        white-space: normal;
+        overflow-wrap: anywhere;
+      }
+
+      /* 代码窗口容器 */
+      .code-window {
+        width: 100%;
+        min-width: 0;
+        margin: 10px 0 0;
+        overflow: hidden;
+        border-radius: 8px;
+        background: #111827;
+        border: 1px solid #263244;
+      }
+
+      /* 代码窗口标题栏 */
+      .code-window__bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 8px 10px;
+        border-bottom: 1px solid #263244;
+        background: #1f2937;
+      }
+
+      /* 代码窗口标题文本 */
+      .code-window__title {
+        color: #cbd5e1;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      /* 复制按钮默认样式 */
+      .copy-code-button {
+        flex: 0 0 auto;
+        border: 1px solid #64748b;
+        border-radius: 5px;
+        padding: 4px 10px;
+        background: #334155;
+        color: #ffffff;
+        font-family: inherit;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      /* 复制按钮悬停效果 */
+      .copy-code-button:hover {
+        background: #475569;
+      }
+
+      /* 复制成功状态样式 */
+      .copy-code-button.is-copied {
+        border-color: #2ecc71;
+        background: #166534;
+      }
+
+      /* 示例代码块样式 */
+      .example-code {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        margin: 0;
+        padding: 12px;
+        overflow-x: hidden;
+        border-radius: 0;
+        background: #111827;
+        color: #e5e7eb;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      /* 卡片内示例代码的额外样式 */
+      .tag-card .example-code {
+        padding: 10px;
+        font-size: 13px;
+      }
+
+      /* 实时预览区域 */
+      .live-preview {
+        width: 100%;
+        min-width: 0;
+        margin-top: 10px;
+        padding: 14px;
+        border: 2px dashed #b7c4d6;
+        border-radius: 6px;
+        background: #ffffff;
+        overflow-wrap: anywhere;
+      }
+
+      /* 预览区域标题间距 */
+      .live-preview h1,
+      .live-preview h2,
+      .live-preview h3,
+      .live-preview h4,
+      .live-preview h5,
+      .live-preview h6 {
+        margin: 8px 0;
+        text-align: left;
+      }
+
+      /* 提示框样式 */
+      .tip-box {
+        margin-top: 14px;
+        padding: 12px 14px;
+        border-left: 5px solid #4a90e2;
+        background: #eef6ff;
+        color: #344054;
+      }
+
+      /* 对比网格布局 */
+      .comparison-grid {
+        display: grid;
+        width: 100%;
+        min-width: 0;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+        gap: 16px;
+      }
+
+      /* 块级元素示例 */
+      .demo-block {
+        display: block;
+        margin: 8px 0;
+        padding: 10px;
+        border: 2px solid #2ecc71;
+        border-radius: 5px;
+        background: #ecfff2;
+      }
+
+      /* 内联元素示例 */
+      .demo-inline {
+        display: inline;
+        padding: 3px 8px;
+        border: 2px solid #f5a623;
+        border-radius: 5px;
+        background: #fff8e6;
+      }
+
+      /* ========== 7. 响应式模块 ========== */
+      @media (max-width: 620px) {
+        /* 小屏幕页面容器调整 */
+        .page {
+          width: min(100% - 16px, 1280px);
+          padding-top: 20px;
+        }
+
+        /* 小屏幕主标题字号调整 */
+        .page-header__title {
+          font-size: 28px;
+        }
+
+        /* 小屏幕章节内边距调整 */
+        .module-section {
+          padding: 16px;
+        }
+
+        /* 小屏幕内层结构盒子缩进 */
+        .structure-box--inner {
+          width: calc(100% - 8px);
+          margin-left: 8px;
+        }
+
+        /* 小屏幕时卡片列表改为单列 */
+        .card-grid,
+        .comparison-grid,
+        .structure-box .card-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="page">
+      <header class="page-header">
+        <h1 class="page-header__title">HTML 标签图解学习</h1>
+        <p class="page-header__text">把 HTML 文档结构和常用标签画成卡片，新手可以一眼看清“写法、作用、显示效果”。</p>
+      </header>
+
+      <!-- 模块 1：HTML 文档基础结构 -->
+      <section class="module-section">
+        <h2 class="module-section__title">一、HTML 文档基础结构</h2>
+        <p class="module-section__text">这一部分解释一个 HTML 文件从外到内的基本组成。</p>
+
+        <div class="structure-diagram">
+          <div class="structure-box">
+            <span class="structure-box__tag">HTML文档声明标签</span>
+            <p><span class="info-label">作用</span>声明当前文档使用 HTML5 标准，让浏览器用现代网页规则解析页面。</p>
+            <p><span class="info-label">位置</span>必须写在 HTML 文件的最前面。</p>
+            <pre class="example-code">
+              &lt;!DOCTYPE html&gt;
+              </pre>
+          </div>
+
+          <div class="structure-box">
+            <span class="structure-box__tag">&lt;html lang="zh-CN"&gt;</span>
+            <p><span class="info-label">作用</span>HTML 文档的根元素，页面里的所有内容都放在它里面。</p>
+            <p><span class="info-label">lang</span>表示页面语言，zh-CN 代表中文（中国）。</p>
+            <pre class="example-code">
+              &lt;html lang="zh-CN"&gt;
+              &lt;head&gt;&lt;/head&gt;
+              &lt;body&gt;&lt;/body&gt;
+              &lt;/html&gt;
+              </pre>
+
+            <div class="structure-box structure-box--inner">
+              <span class="structure-box__tag">&lt;head&gt;</span>
+              <p><span class="info-label">作用</span>存放给浏览器和搜索引擎看的信息，通常不会直接显示在网页正文里。</p>
+              <pre class="example-code">
+                &lt;head&gt;
+                &lt;meta charset="UTF-8"&gt;
+                &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+                &lt;title&gt;网页标题&lt;/title&gt;
+                &lt;link rel="stylesheet" href="style.css"&gt;
+                &lt;style&gt;页面内部样式&lt;/style&gt;
+                &lt;script src="app.js"&gt;&lt;/script&gt;
+                &lt;/head&gt;
+                </pre>
+
+              <div class="card-grid">
+                <article class="tag-card">
+                  <header class="tag-card__header">
+                    <h3 class="tag-card__title">&lt;meta&gt; 元信息类</h3>
+                  </header>
+                  <div class="tag-card__body">
+                    <p><span class="info-label">分类原因</span>这些标签都是 <span class="inline-code">&lt;meta&gt;</span>，只是属性参数不同，所以归为一类。</p>
+                    <p><span class="info-label">常见参数</span><span class="inline-code">charset</span><span class="inline-code">name</span><span class="inline-code">content</span><span class="inline-code">http-equiv</span></p>
+                    <p><span class="info-label">用途</span>声明字符编码、移动端视口、页面描述、关键词、兼容模式等元信息。</p>
+                    <pre class="example-code">
+                      &lt;meta charset="UTF-8"&gt;
+                      &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+                      &lt;meta name="description" content="网页描述内容"&gt;
+                      &lt;meta name="keywords" content="关键词1, 关键词2"&gt;
+                      &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+                      </pre>
+                  </div>
+                </article>
+
+                <article class="tag-card">
+                  <header class="tag-card__header">
+                    <h3 class="tag-card__title">&lt;title&gt;</h3>
+                  </header>
+                  <div class="tag-card__body">
+                    <p><span class="info-label">作用</span>定义浏览器标签页上显示的网页标题。</p>
+                    <p><span class="info-label">特点</span>一个页面通常只写一个 <span class="inline-code">&lt;title&gt;</span>。</p>
+                    <pre class="example-code">
+                      &lt;title&gt;学习网站&lt;/title&gt;
+                      </pre>
+                  </div>
+                </article>
+
+                <article class="tag-card">
+                  <header class="tag-card__header">
+                    <h3 class="tag-card__title">&lt;link&gt;</h3>
+                  </header>
+                  <div class="tag-card__body">
+                    <p><span class="info-label">作用</span>引入外部资源，最常见的是外部 CSS 文件和网站图标。</p>
+                    <p><span class="info-label">常见属性</span><span class="inline-code">rel</span><span class="inline-code">href</span></p>
+                    <pre class="example-code">
+                      &lt;link rel="stylesheet" href="style.css"&gt;
+                      &lt;link rel="icon" href="favicon.ico"&gt;
+                      </pre>
+                  </div>
+                </article>
+
+                <article class="tag-card">
+                  <header class="tag-card__header">
+                    <h3 class="tag-card__title">&lt;style&gt;</h3>
+                  </header>
+                  <div class="tag-card__body">
+                    <p><span class="info-label">作用</span>在当前 HTML 文件内部直接编写 CSS 样式。</p>
+                    <p><span class="info-label">特点</span>适合当前页面专用样式，多个页面共用样式更推荐外部 CSS。</p>
+                    <pre class="example-code">
+                      &lt;style&gt;
+                      body {
+                      background: #f4f7fb;
+                      }
+                      &lt;/style&gt;
+                      </pre>
+                  </div>
+                </article>
+
+                <article class="tag-card">
+                  <header class="tag-card__header">
+                    <h3 class="tag-card__title">&lt;script&gt;</h3>
+                  </header>
+                  <div class="tag-card__body">
+                    <p><span class="info-label">作用</span>引入或编写 JavaScript，让页面具有交互能力。</p>
+                    <p><span class="info-label">说明</span>可以写在 <span class="inline-code">&lt;head&gt;</span> 中，也常写在 <span class="inline-code">&lt;body&gt;</span> 结束前。</p>
+                    <pre class="example-code">
+                      &lt;script src="app.js"&gt;&lt;/script&gt;
+                      </pre>
+                  </div>
+                </article>
+
+                <article class="tag-card">
+                  <header class="tag-card__header">
+                    <h3 class="tag-card__title">&lt;base&gt;</h3>
+                  </header>
+                  <div class="tag-card__body">
+                    <p><span class="info-label">作用</span>设置页面中相对链接的默认基础地址。</p>
+                    <p><span class="info-label">特点</span>一个文档中最多使用一个，通常不常用。</p>
+                    <pre class="example-code">
+                      &lt;base href="https://example.com/" target="_blank"&gt;
+                      </pre>
+                  </div>
+                </article>
+
+                <article class="tag-card">
+                  <header class="tag-card__header">
+                    <h3 class="tag-card__title">&lt;noscript&gt;</h3>
+                  </header>
+                  <div class="tag-card__body">
+                    <p><span class="info-label">作用</span>当浏览器不支持或禁用 JavaScript 时，提供备用提示。</p>
+                    <p><span class="info-label">说明</span>可以放在 <span class="inline-code">&lt;head&gt;</span> 或 <span class="inline-code">&lt;body&gt;</span> 中。</p>
+                    <pre class="example-code">
+                      &lt;noscript&gt;请启用 JavaScript 以获得完整功能。&lt;/noscript&gt;
+                      </pre>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <div class="structure-box structure-box--inner structure-box--body">
+              <span class="structure-box__tag">&lt;body&gt;</span>
+              <p><span class="info-label">作用</span>存放用户能在浏览器窗口中看到的页面内容。</p>
+              <p><span class="info-label">内容分类</span><span class="inline-code">文本内容</span><span class="inline-code">媒体内容</span><span class="inline-code">链接导航</span><span class="inline-code">列表表格</span><span class="inline-code">表单输入</span><span class="inline-code">页面布局</span><span class="inline-code">脚本交互</span></p>
+              <pre class="example-code">
+                &lt;body&gt;
+                &lt;!-- 文本内容类 --&gt;
+                &lt;!-- 媒体内容类 --&gt;
+                &lt;!-- 链接导航类 --&gt;
+                &lt;!-- 列表表格类 --&gt;
+                &lt;!-- 表单输入类 --&gt;
+                &lt;!-- 页面布局类 --&gt;
+                &lt;!-- 脚本交互类 --&gt;
+                &lt;/body&gt;
+                </pre>
+            </div>
+          </div>
+        </div>
+
+        <pre class="example-code">
+          &lt;!DOCTYPE html&gt;
+          &lt;html lang="zh-CN"&gt;
+          &lt;head&gt;
+          &lt;meta charset="UTF-8"&gt;
+          &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+          &lt;title&gt;网页标题&lt;/title&gt;
+          &lt;/head&gt;
+          &lt;body&gt;
+          用户能看到的内容写在这里
+          &lt;/body&gt;
+          &lt;/html&gt;
+          </pre>
+
+      </section>
+
+      <!-- 模块 2：标题标签 -->
+      <section class="module-section">
+        <h2 class="module-section__title">二、标题标签：&lt;h1&gt; 到 &lt;h6&gt;</h2>
+
+        <article class="tag-card">
+          <header class="tag-card__header">
+            <h3 class="tag-card__title">&lt;h1&gt;、&lt;h2&gt;、&lt;h3&gt;、&lt;h4&gt;、&lt;h5&gt;、&lt;h6&gt;</h3>
+          </header>
+          <div class="tag-card__body">
+            <p><span class="info-label">作用</span>定义页面标题和小标题，帮助读者理解内容层级。</p>
+            <p><span class="info-label">层级</span><span class="inline-code">&lt;h1&gt;</span>最大、最重要，通常一个页面只写一个；<span class="inline-code">&lt;h2&gt;</span>到<span class="inline-code">&lt;h6&gt;</span>用于更细的子标题。</p>
+            <p><span class="info-label">SEO</span>合理的标题层级能帮助搜索引擎理解页面结构。</p>
+
+            <pre class="example-code">&lt;h1&gt;这是一个主标题&lt;/h1&gt;
+              &lt;h2&gt;这是一个副标题&lt;/h2&gt;
+              &lt;h3&gt;这是一个三级标题&lt;/h3&gt;
+              &lt;h4&gt;这是一个四级标题&lt;/h4&gt;
+              &lt;h5&gt;这是一个五级标题&lt;/h5&gt;
+              &lt;h6&gt;这是一个六级标题&lt;/h6&gt;</pre>
+
+            <div class="live-preview">
+              <h1>这是一个主标题</h1>
+              <h2>这是一个副标题</h2>
+              <h3>这是一个三级标题</h3>
+              <h4>这是一个四级标题</h4>
+              <h5>这是一个五级标题</h5>
+              <h6>这是一个六级标题</h6>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- 模块 3：段落标签 -->
+      <section class="module-section">
+        <h2 class="module-section__title">三、段落标签：&lt;p&gt;</h2>
+
+        <article class="tag-card">
+          <header class="tag-card__header">
+            <h3 class="tag-card__title">&lt;p&gt;</h3>
+          </header>
+          <div class="tag-card__body">
+            <p><span class="info-label">作用</span>定义一段文字内容，让文本按段落显示。</p>
+            <p><span class="info-label">特点</span>每个段落应该放在单独的<span class="inline-code">&lt;p&gt;</span>标签中，浏览器会自动在段落前后留出间距。</p>
+
+            <pre class="example-code">&lt;p&gt;这是第一段文字。&lt;/p&gt;
+              &lt;p&gt;这是第二段文字。&lt;/p&gt;</pre>
+
+            <div class="live-preview">
+              <p>这是第一段文字。它用来表达一个完整的小主题。</p>
+              <p>这是第二段文字。另起一段后，内容层次会更清楚。</p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- 模块 4：文本格式化标签 -->
+      <section class="module-section">
+        <h2 class="module-section__title">四、文本格式化标签</h2>
+        <p class="module-section__text">文本格式化标签可以分为两类：语义化标签和非语义化标签。</p>
+
+        <div class="tip-box">
+          语义化标签不仅改变显示效果，还告诉浏览器、搜索引擎和辅助设备“这段文字有什么含义”。
+        </div>
+
+        <h3 class="module-section__title">1. 语义化标签</h3>
+        <div class="card-grid">
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">&lt;strong&gt;</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">作用</span>表示重要内容，浏览器通常显示为加粗。</p>
+              <p><span class="info-label">示例</span><span class="inline-code">&lt;strong&gt;重要文本&lt;/strong&gt;</span></p>
+              <div class="live-preview">重要文本：<strong>这是重要文本。</strong></div>
+            </div>
+          </article>
+
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">&lt;em&gt;</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">作用</span>表示需要强调的内容，浏览器通常显示为倾斜。</p>
+              <p><span class="info-label">示例</span><span class="inline-code">&lt;em&gt;强调文本&lt;/em&gt;</span></p>
+              <div class="live-preview">强调文本：<em>这是强调文本。</em></div>
+            </div>
+          </article>
+
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">&lt;del&gt;</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">作用</span>表示已经删除或不再适用的内容，浏览器通常显示删除线。</p>
+              <p><span class="info-label">示例</span><span class="inline-code">&lt;del&gt;旧内容&lt;/del&gt;</span></p>
+              <div class="live-preview">删除内容：<del>这是旧内容。</del></div>
+            </div>
+          </article>
+
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">&lt;ins&gt;</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">作用</span>表示新插入或新增的内容，浏览器通常显示下划线。</p>
+              <p><span class="info-label">示例</span><span class="inline-code">&lt;ins&gt;新内容&lt;/ins&gt;</span></p>
+              <div class="live-preview">新增内容：<ins>这是新内容。</ins></div>
+            </div>
+          </article>
+
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">&lt;mark&gt;</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">作用</span>表示被标记或高亮的重点内容。</p>
+              <p><span class="info-label">示例</span><span class="inline-code">&lt;mark&gt;重点内容&lt;/mark&gt;</span></p>
+              <div class="live-preview">高亮内容：<mark>这是重点内容。</mark></div>
+            </div>
+          </article>
+
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">&lt;code&gt;</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">作用</span>表示一小段计算机代码。</p>
+              <p><span class="info-label">示例</span><span class="inline-code">&lt;code&gt;color: red;&lt;/code&gt;</span></p>
+              <div class="live-preview">代码文本：<code>color: red;</code></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="tip-box">
+          非语义化标签主要改变文字外观，本身不强调文字含义。
+        </div>
+
+        <h3 class="module-section__title">2. 非语义化标签</h3>
+        <div class="card-grid">
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">&lt;b&gt;</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">作用</span>让文字视觉上加粗，但不表示“重要”。</p>
+              <p><span class="info-label">示例</span><span class="inline-code">&lt;b&gt;加粗文本&lt;/b&gt;</span></p>
+              <div class="live-preview">加粗效果：<b>这是加粗文本。</b></div>
+            </div>
+          </article>
+
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">&lt;i&gt;</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">作用</span>让文字视觉上倾斜，但不表示“强调”。</p>
+              <p><span class="info-label">示例</span><span class="inline-code">&lt;i&gt;倾斜文本&lt;/i&gt;</span></p>
+              <div class="live-preview">倾斜效果：<i>这是倾斜文本。</i></div>
+            </div>
+          </article>
+
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">&lt;u&gt;</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">作用</span>给文字添加下划线效果。</p>
+              <p><span class="info-label">示例</span><span class="inline-code">&lt;u&gt;下划线文本&lt;/u&gt;</span></p>
+              <div class="live-preview">下划线效果：<u>这是下划线文本。</u></div>
+            </div>
+          </article>
+
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">&lt;small&gt;</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">作用</span>让文字显示得更小。</p>
+              <p><span class="info-label">示例</span><span class="inline-code">&lt;small&gt;小号文本&lt;/small&gt;</span></p>
+              <div class="live-preview">小号效果：<small>这是小号文本。</small></div>
+            </div>
+          </article>
+
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">&lt;sub&gt;</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">作用</span>显示下标文本，常用于化学式。</p>
+              <p><span class="info-label">示例</span><span class="inline-code">H&lt;sub&gt;2&lt;/sub&gt;O</span></p>
+              <div class="live-preview">下标效果：H<sub>2</sub>O</div>
+            </div>
+          </article>
+
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">&lt;sup&gt;</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">作用</span>显示上标文本，常用于指数或脚注。</p>
+              <p><span class="info-label">示例</span><span class="inline-code">x&lt;sup&gt;2&lt;/sup&gt;</span></p>
+              <div class="live-preview">上标效果：x<sup>2</sup></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="tip-box">
+          推荐记忆：如果文字有“重要、强调、删除、新增、高亮、代码”等含义，优先用语义化标签；如果只是想改变外观，再考虑非语义化标签。
+        </div>
+      </section>
+
+      <!-- 模块 5：块级元素和内联元素 -->
+      <section class="module-section">
+        <h2 class="module-section__title">五、块级元素和内联元素</h2>
+
+        <div class="comparison-grid">
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">块级元素</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">特点</span>默认独占一行，通常用来搭建页面的大结构。</p>
+              <p><span class="info-label">常见标签</span><span class="inline-code">&lt;div&gt;</span><span class="inline-code">&lt;p&gt;</span><span class="inline-code">&lt;h1&gt;</span><span class="inline-code">&lt;ul&gt;</span><span class="inline-code">&lt;li&gt;</span><span class="inline-code">&lt;section&gt;</span></p>
+              <div class="live-preview">
+                <div class="demo-block">&lt;div&gt; 块级元素：我会占一整行</div>
+                <div class="demo-block">&lt;p&gt; 块级元素：我也会另起一行</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">内联元素</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">特点</span>默认不会独占一行，会跟文字或其他内联元素排在同一行。</p>
+              <p><span class="info-label">常见标签</span><span class="inline-code">&lt;span&gt;</span><span class="inline-code">&lt;a&gt;</span><span class="inline-code">&lt;strong&gt;</span><span class="inline-code">&lt;em&gt;</span><span class="inline-code">&lt;img&gt;</span><span class="inline-code">&lt;br&gt;</span></p>
+              <div class="live-preview">
+                普通文字
+                <span class="demo-inline">&lt;span&gt; 内联元素</span>
+                <strong class="demo-inline">&lt;strong&gt; 内联元素</strong>
+                仍然在同一行。
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="tip-box">
+          简单记忆：块级元素像“盒子”，常用于分区和排版；内联元素像“文字片段”，常用于修饰一小段内容。
+        </div>
+      </section>
+
+      <section class="module-section">
+        <h2 class="module-section__title">六、新知识点标题</h2>
+
+        <div class="card-grid">
+          <article class="tag-card">
+            <header class="tag-card__header">
+              <h3 class="tag-card__title">&lt;标签名&gt;</h3>
+            </header>
+            <div class="tag-card__body">
+              <p><span class="info-label">作用</span>这里写这个标签的作用。</p>
+              <p><span class="info-label">特点</span>这里写这个标签的特点。</p>
+
+              <pre class="example-code">&lt;标签名&gt;示例内容&lt;/标签名&gt;</pre>
+
+              <div class="live-preview">
+                这里写浏览器中真正显示出来的效果。
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="tip-box">
+          这里写一句帮助记忆的小提示。
+        </div>
+      </section>
+
+      <!--========== 新增内容模板 ==========-->
+      <!--使用方法：
+      1. 复制下面这个 section。
+      2. 粘贴到 </main> 之前。
+      3. 修改标题、标签名、说明、代码示例和预览内容。
+
+      <section class="module-section">
+      <h2 class="module-section__title">六、新知识点标题</h2>
+
+      <div class="card-grid">
+      <article class="tag-card">
+      <header class="tag-card__header">
+      <h3 class="tag-card__title">&lt;标签名&gt;</h3>
+      </header>
+      <div class="tag-card__body">
+      <p><span class="info-label">作用</span>这里写这个标签的作用。</p>
+      <p><span class="info-label">特点</span>这里写这个标签的特点。</p>
+
+      <pre class="example-code">&lt;标签名&gt;示例内容&lt;/标签名&gt;</pre>
+
+      <div class="live-preview">
+      这里写浏览器中真正显示出来的效果。
+      </div>
+      </div>
+      </article>
+      </div>
+
+      <div class="tip-box">
+      这里写一句帮助记忆的小提示。
+      </div>
+      </section>
+      -->
+    </main>
+
+    <script>
+      function normalizeCodeText(text) {
+      const lines = text.replace(/\t/g, "  ").split("\n");
+
+      while (lines.length && lines[0].trim() === "") {
+      lines.shift();
+      }
+
+      while (lines.length && lines[lines.length - 1].trim() === "") {
+      lines.pop();
+      }
+
+      const indents = lines
+      .filter((line) => line.trim() !== "")
+      .map((line) => line.match(/^ */)[0].length);
+
+      const minIndent = indents.length ? Math.min(...indents) : 0;
+      return lines.map((line) => line.slice(minIndent)).join("\n");
+      }
+
+      async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return;
+      }
+
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      textarea.remove();
+      }
+
+      document.querySelectorAll(".example-code").forEach((block) => {
+      block.textContent = normalizeCodeText(block.textContent);
+
+      const windowBox = document.createElement("div");
+      windowBox.className = "code-window";
+
+      const bar = document.createElement("div");
+      bar.className = "code-window__bar";
+
+      const title = document.createElement("span");
+      title.className = "code-window__title";
+      title.textContent = "代码示例";
+
+      const button = document.createElement("button");
+      button.className = "copy-code-button";
+      button.type = "button";
+      button.textContent = "复制";
+
+      bar.append(title, button);
+      block.before(windowBox);
+      windowBox.append(bar, block);
+
+      button.addEventListener("click", async () => {
+      await copyText(block.textContent);
+      button.textContent = "已复制";
+      button.classList.add("is-copied");
+
+      setTimeout(() => {
+      button.textContent = "复制";
+      button.classList.remove("is-copied");
+      }, 1400);
+      });
+      });
+    </script>
+  </body>
+</html>

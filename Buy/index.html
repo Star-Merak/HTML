@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>星河书屋 - 小说首页</title>
+    <style>
+        * { box-sizing: border-box; }
+        :root {
+            --menu-line-color: #0ea5e9;
+            --menu-line-width: 22px;
+            --menu-line-height: 2px;
+            --menu-line-gap: 5px;
+        }
+        body {
+            margin: 0;
+            font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+            color: #252936;
+            background: #eef8ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        header {
+            min-height: 72px;
+            padding: 0 clamp(16px, 6vw, 96px);
+            background: #f7fcff;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            z-index: 2;
+        }
+        .brand {
+            font-size: 25px;
+            font-weight: 750;
+            color: #0ea5e9;
+            margin-right: 36px;
+            text-decoration: none;
+            line-height: 1;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .menu-toggle { display: none; }
+        .menu-button {
+            width: 42px;
+            height: 42px;
+            border: 0;
+            background: transparent;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: var(--menu-line-gap);
+            cursor: pointer;
+            margin-left: auto;
+            padding: 0;
+        }
+        .menu-button span {
+            display: block;
+            width: var(--menu-line-width);
+            height: var(--menu-line-height);
+            border-radius: 999px;
+            background: var(--menu-line-color);
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        nav a {
+            color: #0b8dcc;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.2;
+            transition: color .18s ease;
+        }
+        nav a:hover,
+        nav a:focus-visible {
+            color: #075985;
+            outline: none;
+        }
+        .hero {
+            padding: 56px clamp(20px, 8vw, 128px) 34px;
+            text-align: center;
+        }
+        .hero h1 {
+            margin: 0 0 16px;
+            font-size: clamp(30px, 5vw, 52px);
+            line-height: 1.18;
+            color: #2d2f39;
+        }
+        .hero p {
+            margin: 0 auto;
+            max-width: 680px;
+            color: #6b7280;
+            font-size: clamp(16px, 2.2vw, 18px);
+            line-height: 1.8;
+        }
+        .content {
+            padding: 10px clamp(20px, 8vw, 128px) 64px;
+        }
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin: 34px 0 16px;
+        }
+        .section-title h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+        .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .tag-filter,
+        .tag {
+            border: 1px solid #b8e2f6;
+            border-radius: 999px;
+            background: #fff;
+            color: #087fb8;
+            padding: 7px 12px;
+            font: inherit;
+            font-size: 13px;
+        }
+        .tag-filter {
+            cursor: pointer;
+        }
+        .tag-filter.active {
+            background: #0ea5e9;
+            color: #fff;
+            border-color: #0ea5e9;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+        }
+        .book-card {
+            min-height: 230px;
+            border: 1px solid #c7e8fb;
+            border-radius: 8px;
+            background: #fff;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 12px 28px rgba(14, 165, 233, .08);
+        }
+        .book-card:hover {
+            border-color: #0ea5e9;
+            transform: translateY(-1px);
+        }
+        .book-card h3 {
+            margin: 0;
+            font-size: 19px;
+            color: #172033;
+        }
+        .meta {
+            color: #667085;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+        .summary {
+            color: #4b5563;
+            line-height: 1.75;
+            margin: 0;
+            flex: 1;
+        }
+        .empty {
+            padding: 34px;
+            border: 1px dashed #a8d9f3;
+            border-radius: 8px;
+            background: #fff;
+            color: #667085;
+            text-align: center;
+        }
+        @media (min-width: 781px) {
+            .menu-button { display: none; }
+        }
+        @media (max-width: 780px) {
+            header {
+                min-height: 68px;
+            }
+            .brand {
+                font-size: 23px;
+                margin-right: 28px;
+            }
+            nav {
+                display: none;
+                position: absolute;
+                top: calc(100% - 1px);
+                right: clamp(20px, 8vw, 128px);
+                width: 172px;
+                padding: 8px;
+                border: 1px solid #c7e8fb;
+                border-radius: 6px;
+                background: #fff;
+                box-shadow: 0 12px 28px rgba(14, 165, 233, .16);
+            }
+            .menu-toggle:checked ~ nav {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            nav a {
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a class="brand" href="index.html">星河书屋</a>
+        <input class="menu-toggle" id="menuToggle" type="checkbox" />
+        <label class="menu-button" for="menuToggle" aria-label="展开菜单">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+        <nav>
+            <a href="index.html">首页</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>在故事里遇见另一种人生</h1>
+            <p>精选玄幻、都市、悬疑与更多小说，按推荐、更新和标签整理，让读者快速找到正在追的好书。</p>
+        </section>
+        <section class="content">
+            <div class="section-title">
+                <h2>筛选</h2>
+                <div style="display:flex;gap:12px;align-items:center;width:100%">
+                    <select id="statusFilter" class="tag-filter" aria-label="状态筛选">
+                        <option value="">全部状态</option>
+                        <option value="连载">连载</option>
+                        <option value="完结">完结</option>
+                    </select>
+                    <select id="sortOrder" class="tag-filter" aria-label="排序">
+                        <option value="recommend">按推荐</option>
+                        <option value="latest">按最新</option>
+                        <option value="hot">按热度</option>
+                    </select>
+                    <div class="tags" id="categoryTags" style="margin-left:auto"></div>
+                </div>
+            </div>
+            <div class="section-title">
+                <h2>今日推荐</h2>
+            </div>
+            <div class="grid" id="featuredBooks"></div>
+            <div class="section-title">
+                <h2>最新收录</h2>
+            </div>
+            <div class="grid" id="latestBooks"></div>
+        </section>
+    </main>
+
+    <script>
+        const menuStyleKey = "hamburgerMenuStyle";
+        const defaultMenuStyle = { color: "#0ea5e9", width: "22", thickness: "2", gap: "5" };
+        let books = [];
+        let selectedCategory = "";
+        let statusFilter = "";
+        let sortOrder = "recommend";
+
+        function escapeHtml(value) {
+            return String(value ?? "").replace(/[&<>"']/g, char => ({
+                "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
+            }[char]));
+        }
+
+        function applyMenuStyle() {
+            const saved = localStorage.getItem(menuStyleKey);
+            const settings = saved ? { ...defaultMenuStyle, ...JSON.parse(saved) } : defaultMenuStyle;
+            const root = document.documentElement;
+            root.style.setProperty("--menu-line-color", settings.color);
+            root.style.setProperty("--menu-line-width", `${settings.width}px`);
+            root.style.setProperty("--menu-line-height", `${settings.thickness}px`);
+            root.style.setProperty("--menu-line-gap", `${settings.gap}px`);
+        }
+
+        function renderBookGrid(target, items) {
+            target.innerHTML = items.length ? items.map(book => `
+                <a class="book-card" href="book.html?id=${book.id}">
+                    <h3>${escapeHtml(book.title)}</h3>
+                    <div class="meta">作者：${escapeHtml(book.author)} · ${escapeHtml(book.status)}</div>
+                    <p class="summary">${escapeHtml(book.summary)}</p>
+                    <div class="meta">最新：${escapeHtml(book.latest_chapter)}</div>
+                    <div class="tags">${book.tags.map(tag => `<span class="tag">${escapeHtml(tag.name)}</span>`).join("")}</div>
+                </a>
+            `).join("") : '<div class="empty">暂无书籍，请先在后台添加。</div>';
+        }
+
+        function render() {
+            const filtered = books.filter(book => {
+                if (selectedCategory && !book.tags.some(tag => tag.name === selectedCategory)) return false;
+                if (statusFilter && String(book.status) !== String(statusFilter)) return false;
+                return true;
+            });
+
+            const getNum = v => (typeof v === 'number' ? v : Number(v)) || 0;
+            if (sortOrder === 'latest') {
+                filtered.sort((a, b) => getNum(b.updated_at || b.updated_ts) - getNum(a.updated_at || a.updated_ts));
+            } else if (sortOrder === 'hot') {
+                filtered.sort((a, b) => getNum(b.views || b.popularity) - getNum(a.views || a.popularity));
+            }
+
+            renderBookGrid(document.getElementById("featuredBooks"), filtered.filter(book => book.featured));
+            renderBookGrid(document.getElementById("latestBooks"), filtered);
+        }
+
+        async function loadData() {
+            const [bookRes, catRes] = await Promise.all([fetch("/api/books"), fetch("/api/categories")]);
+            books = (await bookRes.json()).books;
+            const catsJson = await catRes.json();
+            const categories = catsJson.categories || catsJson.tags || [];
+
+            document.getElementById("categoryTags").innerHTML = [
+                `<button class="tag-filter active" type="button" data-cat="">全部</button>`,
+                ...categories.map(cat => `<button class="tag-filter" type="button" data-cat="${escapeHtml(cat.name)}">${escapeHtml(cat.name)}</button>`)
+            ].join("");
+
+            document.querySelectorAll("#categoryTags .tag-filter").forEach(button => {
+                button.addEventListener("click", () => {
+                    selectedCategory = button.dataset.cat;
+                    document.querySelectorAll("#categoryTags .tag-filter").forEach(item => item.classList.toggle("active", item === button));
+                    render();
+                });
+            });
+
+            document.getElementById('statusFilter').addEventListener('change', (e) => {
+                statusFilter = e.target.value;
+                render();
+            });
+            document.getElementById('sortOrder').addEventListener('change', (e) => {
+                sortOrder = e.target.value;
+                render();
+            });
+
+            render();
+        }
+
+        applyMenuStyle();
+        loadData().catch(() => {
+            document.getElementById("latestBooks").innerHTML = '<div class="empty">无法连接后端服务，请先运行 npm start。</div>';
+        });
+
+        const menuToggle = document.getElementById("menuToggle");
+        const menuButton = document.querySelector(".menu-button");
+        const nav = document.querySelector("nav");
+        document.addEventListener("click", event => {
+            if (!menuToggle.checked) return;
+            if (!menuToggle.contains(event.target) && !menuButton.contains(event.target) && !nav.contains(event.target)) {
+                menuToggle.checked = false;
+            }
+        });
+    </script>
+</body>
+</html>
